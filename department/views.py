@@ -23,37 +23,20 @@ def details(request, id):
   return HttpResponse(template.render(context, request))
 
 def testing(request):
-  newest=Employee.objects.filter(department=OuterRef('pk')).order_by('-salary')
-  querySet = Department.objects.annotate(
-    max_salary=Subquery(newest.values('salary')[:1])).order_by('-max_salary') 
-  
   name_map = {"id": "id", "name": "name", "employee_name":"employee_name", "max_salary":"max_salary"}
-  raw = Department.objects.raw("""                               
-                                with cte as (
-                                  select
-                                    id,
-                                    department_id,
-                                    salary,
-                                    name,
-                                    dense_rank() over (partition by department_id order by salary desc)  as rank
-                                  from employee_employee )
-                                select
-                                  d.id,
-                                  d.name,
-                                  cte.name as employee_name,
-                                  cte.salary as max_salary
-                                from department_department d
-                                join cte on cte.department_id = d.id
-                                where rank = 1
-                                order by cte.salary desc
+  raw = Department.objects.raw("""    
+                             with sq  as (SELECT department_id, max(salary)  as max_salary
+                                from employee_employee
+                                group by department_id)
+                              select id, name,  max_salary
+                              from department_department d
+                              join sq on sq.department_id = d.id                           
                                """,translations=name_map)
 
   template = loader.get_template('testing.html')
   
 
   context = {
-    'querySet':querySet,
     'raw':raw
-    # 'employees': employees,
   }
   return HttpResponse(template.render(context, request))
