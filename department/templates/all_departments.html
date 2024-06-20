@@ -1,0 +1,15 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Departments</h1>
+  
+<ul>
+  {% for x in departments %}
+    <li><a href="details/{{ x.id }}">{{ x.id }} {{ x.name }}</a></li>
+  {% endfor %}
+</ul>
+
+</body>
+</html>

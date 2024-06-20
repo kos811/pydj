@@ -1,0 +1,12 @@
+<table border='1'>
+    <tr>
+      <th>ID</th>
+      <th>name</th>
+    </tr>
+    {% for x in department %}
+      <tr>
+        <td>{{ x.id }}</td>
+        <td>{{ x.name }}</td>
+      </tr>
+    {% endfor %}
+  </table>
