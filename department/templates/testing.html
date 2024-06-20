@@ -1,12 +1,22 @@
-<table border='1'>
-    <tr>
-      <th>ID</th>
-      <th>name</th>
-    </tr>
-    {% for x in department %}
-      <tr>
-        <td>{{ x.id }}</td>
-        <td>{{ x.name }}</td>
-      </tr>
-    {% endfor %}
-  </table>
+<table border='1 dash'>
+
+  {% for dep in q %}
+  <tr>
+    <td>{{ dep.id }}</td>
+    <td>{{ dep.name }}</td>
+    <td>${{ dep.max_salary }}</td>
+    
+    <td>
+      <table border='1'>
+        {% for emp in dep.employee_set.all %}
+        <tr>
+          <td>{{ emp.id }} : {{ emp.name }}</td>
+          <td> ${{emp.salary}}</td>
+          <td> {{emp.max_salary}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
