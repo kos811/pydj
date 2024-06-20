@@ -1,11 +1,62 @@
+<h1>With ORM</h1>
+<div  style="border:1px  solid black; width:600px">
+  {{querySet.explain}}
+</div>
+<div  style="border:1px  solid black; width:600px">
+  {{querySet.query}}
+</div>
 <table border='1 dash'>
 
-  {% for dep in q %}
+  <tr>
+    <th>ID</th>
+    <th>name</th>
+    <th>max salary</th>
+    <th>emploeeys</th>
+  </tr>
+  {% for dep in querySet %}
   <tr>
     <td>{{ dep.id }}</td>
     <td>{{ dep.name }}</td>
     <td>${{ dep.max_salary }}</td>
-    
+
+    <td>
+      <table border='1'>
+        {% for emp in dep.employee_set.all %}
+        <tr>
+          <td>{{ emp.id }} : {{ emp.name }}</td>
+          <td> ${{emp.salary}}</td>
+          <td> {{emp.max_salary}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<br>
+<h1>With RAW sql</h1>
+
+<div  style="border:1px  solid black; width:600px">
+  {{raw.explain}}
+</div>
+<div  style="border:1px  solid black; width:600px">
+  {{raw.query}}
+</div>
+<table border='1 dash'>
+
+  <tr>
+    <th>ID</th>
+    <th>name</th>
+    <th>max salary</th>
+    <th>emploeeys</th>
+  </tr>
+  {% for dep in raw %}
+  <tr>
+    <td>{{ dep.id }}</td>
+    <td>{{ dep.name }}</td>
+    <td>${{ dep.max_salary }}</td>
+
     <td>
       <table border='1'>
         {% for emp in dep.employee_set.all %}
